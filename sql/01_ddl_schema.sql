@@ -1,4 +1,4 @@
-DROP TABLE IF EXIST autor;
+DROP TABLE IF EXISTS autor;
 CREATE TABLE autor (
 	id_autor INT PRIMARY KEY AUTO_INCREMENT,
 	nombre VARCHAR(50) NOT NULL,
@@ -6,14 +6,14 @@ CREATE TABLE autor (
 	nacionalidad VARCHAR(50)
 );
 
-DROP TABLE IF EXIST genero;
+DROP TABLE IF EXISTS genero;
 CREATE TABLE genero (
 	id_genero INT PRIMARY KEY AUTO_INCREMENT,
 	nombre VARCHAR(50) NOT NULL,
 	descripcion VARCHAR(200)
 );
 
-DROP TABLE IF EXIST libro;
+DROP TABLE IF EXISTS libro;
 CREATE TABLE libro (
 	isbn VARCHAR(13) PRIMARY KEY,
 	anio_publicacion INT NOT NULL,
@@ -21,25 +21,25 @@ CREATE TABLE libro (
 	stock_disponible INT DEFAULT 0 CHECK (stock_disponible >= 0)	
 );
 
-DROP TABLE IF EXIST libro_genero;
+DROP TABLE IF EXISTS libro_genero;
 CREATE TABLE libro_genero (
 	id_genero INT NOT NULL,
 	id_libro VARCHAR(13) NOT NULL,
 	PRIMARY KEY (id_genero, id_libro),
-	FOREIGN KEY (id_genero) REFERENCES genero (id_genero),
-	FOREIGN KEY (id_libro) REFERENCES libro (isbn)
+	FOREIGN KEY (id_genero) REFERENCES genero (id_genero) ON DELETE CASCADE,
+	FOREIGN KEY (id_libro) REFERENCES libro (isbn) ON DELETE CASCADE
 );
 
-DROP TABLE IF EXIST libro_autor;
+DROP TABLE IF EXISTS libro_autor;
 CREATE TABLE libro_autor (
 	id_autor INT NOT NULL,
 	id_libro VARCHAR(13) NOT NULL,
 	PRIMARY KEY (id_autor, id_libro),
-	FOREIGN KEY (id_autor) REFERENCES autor (id_autor),
-	FOREIGN KEY (id_libro) REFERENCES libro (isbn)
+	FOREIGN KEY (id_autor) REFERENCES autor (id_autor) ON DELETE CASCADE,
+	FOREIGN KEY (id_libro) REFERENCES libro (isbn) ON DELETE CASCADE
 );
 
-DROP TABLE IF EXIST socio;
+DROP TABLE IF EXISTS socio;
 CREATE TABLE socio (
 	id_socio INT PRIMARY KEY AUTO_INCREMENT,
 	dni VARCHAR(8) NOT NULL UNIQUE,
@@ -50,16 +50,16 @@ CREATE TABLE socio (
 	estado VARCHAR(50) DEFAULT 'ACTIVO' CHECK (estado IN ('ACTIVO', 'SUSPENDIDO', 'BAJA'))
 );
 
-DROPT TABLE IF EXIST ejemplar;
+DROP TABLE IF EXISTS ejemplar;
 CREATE TABLE ejemplar (
 	id_ejemplar INT PRIMARY KEY AUTO_INCREMENT,
 	isbn VARCHAR(13) NOT NULL,
 	nro_ejemplar INT NOT NULL,
 	estado_fisico VARCHAR(50) CHECK (estado_fisico IN ('BUENO', 'REGULAR', 'BAJA')),
-	FOREIGN KEY (isbn) REFERENCES libro (isbn)
+	FOREIGN KEY (isbn) REFERENCES libro (isbn) ON DELETE CASCADE
 );
 
-DROP TABLE IF EXIST prestamo;
+DROP TABLE IF EXISTS prestamo;
 CREATE TABLE prestamo (
 	id_prestamo INT PRIMARY KEY AUTO_INCREMENT,
 	fecha_prestamo DATETIME DEFAULT (CURDATE()),
@@ -72,13 +72,20 @@ CREATE TABLE prestamo (
 	FOREIGN KEY (id_ejemplar) REFERENCES ejemplar (id_ejemplar) ON DELETE CASCADE
 );
 
-DROP TABLE IF EXIST sancion;
+DROP TABLE IF EXISTS tipo_sancion;
+CREATE TABLE tipo_sancion (
+	id_tipo INT PRIMARY KEY AUTO_INCREMENT,
+	periodo INT NOT NULL
+);
+
+DROP TABLE IF EXISTS sancion;
 CREATE TABLE sancion (
 	id_sancion INT PRIMARY KEY AUTO_INCREMENT,
 	id_socio INT NOT NULL,
-	tipo INT NOT NULL,
+	id_tipo INT,
 	fecha_inicio DATE NOT NULL,
 	fecha_fin DATE NOT NULL,
 	motivo VARCHAR(100),
-	FOREIGN KEY (id_socio) REFERENCES socio (id_socio)
+	FOREIGN KEY (id_socio) REFERENCES socio (id_socio) ON DELETE CASCADE,
+	FOREIGN KEY (id_tipo) REFERENCES tipo_sancion (id_tipo) ON DELETE SET NULL
 );

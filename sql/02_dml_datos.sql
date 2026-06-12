@@ -169,4 +169,21 @@ INSERT INTO prestamo (fecha_prestamo, fecha_vencimiento, fecha_devolucion, estad
 ('2026-06-08', '2026-06-23', NULL, 'ACTIVO', 21, 9),
 ('2026-06-09', '2026-06-24', NULL, 'ACTIVO', 30, 12);
 
+INSERT INTO tipo_sancion (id_tipo, periodo) VALUES
+(1, 10), 
+(2, 15), 
+(3, 30);
+
+INSERT INTO sancion (id_socio, id_tipo, fecha_inicio, motivo) VALUES
+(3,  1, '2026-05-01', 'Devolución tardía del ejemplar de It.'),
+(5,  1, '2026-05-06', 'Retraso de 3 días en la entrega de la novela.'),
+(11, 1, '2026-05-11', 'Devolución fuera de término.'),
+(20, 1, '2026-05-20', 'Ejemplar devuelto una semana tarde.'),
+(13, 2, '2026-05-04', 'Retraso reiterado en las fechas de vencimiento.'),
+(14, 2, '2026-05-14', 'Superó los 10 días de retraso sin aviso.'),
+(17, 2, '2026-05-18', 'Segunda advertencia por devolución tardía.'),
+(23, 3, '2026-05-22', 'Maltrato físico evidente al ejemplar entregado.'),
+(25, 3, '2026-05-24', 'El socio reportó la pérdida del ejemplar prestado.'),
+(29, 3, '2026-05-30', 'Falta total de respuesta a los avisos de vencimiento.');
+
 COMMIT;

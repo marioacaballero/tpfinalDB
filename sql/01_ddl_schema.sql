@@ -84,7 +84,6 @@ CREATE TABLE sancion (
 	id_socio INT NOT NULL,
 	id_tipo INT,
 	fecha_inicio DATE NOT NULL,
-	fecha_fin DATE NOT NULL,
 	motivo VARCHAR(100),
 	FOREIGN KEY (id_socio) REFERENCES socio (id_socio) ON DELETE CASCADE,
 	FOREIGN KEY (id_tipo) REFERENCES tipo_sancion (id_tipo) ON DELETE SET NULL

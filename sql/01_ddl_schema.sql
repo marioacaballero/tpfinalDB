@@ -18,7 +18,7 @@ CREATE TABLE libro (
 	isbn VARCHAR(13) PRIMARY KEY,
 	anio_publicacion INT NOT NULL,
 	stock_total INT DEFAULT 0,
-	stock_disponible INT DEFAULT 0 CHECK (stock_disponible >= 0)	
+	stock_disponible INT DEFAULT 0 CHECK (stock_disponible >= 0 AND stock_disponible <= stock_total)	
 );
 
 DROP TABLE IF EXISTS libro_genero;
@@ -55,7 +55,7 @@ CREATE TABLE ejemplar (
 	id_ejemplar INT PRIMARY KEY AUTO_INCREMENT,
 	isbn VARCHAR(13) NOT NULL,
 	nro_ejemplar INT NOT NULL,
-	estado_fisico VARCHAR(50) CHECK (estado_fisico IN ('BUENO', 'REGULAR', 'BAJA')),
+	estado_fisico VARCHAR(50) CHECK (estado_fisico IN ('DISPONIBLE', 'PRESTADO', 'RESERVADO', 'BAJA')),
 	FOREIGN KEY (isbn) REFERENCES libro (isbn) ON DELETE CASCADE
 );
 
@@ -85,6 +85,7 @@ CREATE TABLE sancion (
 	id_tipo INT,
 	fecha_inicio DATE NOT NULL,
 	motivo VARCHAR(100),
+	activa boolean default true,
 	FOREIGN KEY (id_socio) REFERENCES socio (id_socio) ON DELETE CASCADE,
 	FOREIGN KEY (id_tipo) REFERENCES tipo_sancion (id_tipo) ON DELETE SET NULL
 );

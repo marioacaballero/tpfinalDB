@@ -1,0 +1,6 @@
+GROQ_API_KEY=gsk_tu_clave_real_de_groq_aqui
+DB_USER=root
+DB_PASSWORD=tu_contraseña_de_mysql
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=mi_base_de_datos

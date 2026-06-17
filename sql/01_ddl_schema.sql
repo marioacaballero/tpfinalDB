@@ -89,3 +89,13 @@ CREATE TABLE sancion (
 	FOREIGN KEY (id_socio) REFERENCES socio (id_socio) ON DELETE CASCADE,
 	FOREIGN KEY (id_tipo) REFERENCES tipo_sancion (id_tipo) ON DELETE SET NULL
 );
+
+DROP TABLE IF EXISTS auditoria_prestamos
+CREATE TABLE auditoria_prestamos (
+	id_auditoria INT PRIMARY KEY AUTO_INCREMENT,
+	fecha_cambio DATETIME DEFAULT CURRENT_TIMESTAMP,
+	motivo VARCHAR(50) NOT NULL,
+	usuario VARCHAR(50) NOT NULL,
+	id_prestamo INT NOT NULL,
+	FOREIGN KEY (id_prestamo) REFERENCES prestamo (id_prestamo) ON DELETE CASCADE
+);

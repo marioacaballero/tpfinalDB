@@ -18,7 +18,8 @@ CREATE TABLE libro (
 	isbn VARCHAR(13) PRIMARY KEY,
 	anio_publicacion INT NOT NULL,
 	stock_total INT DEFAULT 0,
-	stock_disponible INT DEFAULT 0 CHECK (stock_disponible >= 0 AND stock_disponible <= stock_total)	
+	stock_disponible INT DEFAULT 0,
+	CONSTRAINT chk_stock CHECK (stock_disponible >= 0 AND stock_disponible <= stock_total)	
 );
 
 DROP TABLE IF EXISTS libro_genero;
@@ -90,7 +91,7 @@ CREATE TABLE sancion (
 	FOREIGN KEY (id_tipo) REFERENCES tipo_sancion (id_tipo) ON DELETE SET NULL
 );
 
-DROP TABLE IF EXISTS auditoria_prestamos
+DROP TABLE IF EXISTS auditoria_prestamos;
 CREATE TABLE auditoria_prestamos (
 	id_auditoria INT PRIMARY KEY AUTO_INCREMENT,
 	fecha_cambio DATETIME DEFAULT CURRENT_TIMESTAMP,

@@ -27,7 +27,8 @@ BEGIN
   
   IF sanciones_activas > 0 THEN
     SIGNAL SQLSTATE '45000'
-      SET MESSAGE_TEXT = 'El socio tiene sanciones activas'
+      SET MESSAGE_TEXT = 'El socio tiene sanciones activas';
+  END IF;
 
   -- Verificar disponibilidad ejemplar
   SELECT estado_fisico INTO ejemplar_disponible FROM ejemplar
@@ -35,15 +36,12 @@ BEGIN
 
   IF ejemplar_disponible <> 'DISPONIBLE' THEN
     SIGNAL SQLSTATE '45000'
-      SET MESSAGE_TEXT = 'El ejemplar no esta disponible'
+      SET MESSAGE_TEXT = 'El ejemplar no esta disponible';
+  END IF;
 
   START TRANSACTION;
 	INSERT INTO prestamo (fecha_prestamo, fecha_vencimiento, id_socio, id_ejemplar) VALUES
 	(CURDATE(), DATE_ADD(CURDATE(), INTERVAL 5 DAY)), p_id_socio, p_id_ejemplar);
-
-	UPDATE libro
-	SET stock_disponible = stock_disponible - 1
-	WHERE isbn = (SELECT isbn FROM ejemplar WHERE id_ejemplar = p_id_ejemplar);
 
 	UPDATE ejemplar
 	SET estado_fisico = 'PRESTADO'
@@ -54,8 +52,31 @@ END//
 DELIMITER ;
 
 DELIMITER //
-CREATE PROCEDURE sp_generar_sancion(s_id_socio, tipo, dias_mora)
+CREATE PROCEDURE sp_generar_sancion(s_id_socio, dias_mora)
 BEGIN
+  DECLARE tipo INT; -- Sacamos el tipo de los parametros ya que lo vimos innecesario
+  DECLARE tipo_motivo VARCHAR(100);
+  DECLARE EXIT HANDLER FOR SQLEXCEPTION
+  BEGIN
+    ROLLBACK;
+    SELECT 'Error al procesar el prestamo' AS mensaje;
+  END;
+
+  IF dias_mora > 30 THEN
+	SET tipo = 3;
+	SET tipo_motivo = 'Demora mayor a 30 dias';
+  ELSEIF dias_mora > 15 THEN
+	SET tipo = 2;
+	SET tipo_motivo = 'Demora mayor a 15 dias';
+  ELSE
+	SET tipo = 1;
+	SET tipo_motivo = 'Demora menor a 15 dias';
+  END IF;
+
+  START TRANSACTION;
+	INSERT INTO sancion (id_socio, fecha_inicio, id_tipo, motivo)
+	VALUES (s_id_socio, CURDATE(), tipo, tipo_motivo);
+  COMMIT;
 
 END //
 DELIMITER ;
@@ -79,9 +100,12 @@ BEGIN
     START TRANSACTION;
 	SELECT id_socio INTO socio FROM prestamo
 		WHERE id_prestamo = p_id_prestamo;
+
+	UPDATE prestamo 
+	SET estado = 'VENCIDO'
+	WHERE id_prestamo = p_id_prestamo;
 	
-	-- HAY QUE VER QUE TIPO PONEMOS
-	CALL sp_generar_sancion(socio, tipo, DATEDIFF(fecha_dev, fecha_ven))
+	CALL sp_generar_sancion(socio, DATEDIFF(fecha_dev, fecha_ven));
     COMMIT;
   ELSE
     START TRANSACTION;
@@ -93,12 +117,6 @@ BEGIN
 	JOIN prestamo p ON e.id_ejemplar = p.id_ejemplar
 	SET e.estado_fisico = 'DISPONIBLE'
 	WHERE e.id_ejemplar = p_id_ejemplar;
-
-	UPDATE libro
-	SET stock_disponible = stock_disponible + 1
-	WHERE isbn = (SELECT e.isbn FROM prestamo p
-			JOIN ejemplar e ON e.id_ejemplar = p.id_ejemplar
-			WHERE p.id_prestamo = p_id_prestamo); 
     COMMIT;
   END IF;
   SELECT 'Prestamo actualizado' AS mensaje;

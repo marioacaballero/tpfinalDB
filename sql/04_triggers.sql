@@ -58,7 +58,7 @@ CREATE TRIGGER trg_audit_prestamo_update
 AFTER UPDATE ON prestamo
 FOR EACH ROW
 BEGIN
-  IF NOT (NEW.fecha_devolucion <=> OLD.fecha_devolucion) OR NOT (NEW.fecha_vencimiento <=> OLD.fecha_vencimiento) THEN
+  IF (NEW.fecha_devolucion <=> OLD.fecha_devolucion) OR (NEW.fecha_vencimiento <=> OLD.fecha_vencimiento) THEN
     INSERT INTO auditoria_prestamos (id_prestamo, motivo, usuario)
     VALUES (NEW.id_prestamo, NEW.estado, USER());
   END IF;

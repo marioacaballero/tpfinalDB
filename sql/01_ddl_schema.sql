@@ -98,6 +98,5 @@ CREATE TABLE auditoria_prestamos (
 	fecha_cambio DATETIME DEFAULT CURRENT_TIMESTAMP,
 	motivo VARCHAR(50) NOT NULL,
 	usuario VARCHAR(50) NOT NULL,
-	id_prestamo INT NOT NULL,
-	FOREIGN KEY (id_prestamo) REFERENCES prestamo (id_prestamo) ON DELETE CASCADE
+	id_prestamo INT NOT NULL
 );

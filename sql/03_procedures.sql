@@ -4,16 +4,18 @@ BEGIN
   DECLARE prestamos_activos INT DEFAULT 0;
   DECLARE sanciones_activas INT DEFAULT 0;
   DECLARE ejemplar_disponible VARCHAR(50);
+  DECLARE v_mensaje_error VARCHAR(255) DEFAULT 'Error al cargar prestamo';
+
   DECLARE EXIT HANDLER FOR SQLEXCEPTION
   BEGIN
+    GET DIAGNOSTICS CONDITION 1 v_mensaje_error = MESSAGE_TEXT;
     ROLLBACK;
-    SELECT 'Error al cargar prestamo' AS mensaje;
+    SELECT v_mensaje_error AS mensaje;
   END;
 
   -- Verificar limite de prestamos
   SELECT count(p.id_prestamo) INTO prestamos_activos FROM prestamo p
-	WHERE p.id_socio = p_id_socio AND p.id_ejemplar = p_id_ejemplar
-	group by p.id_prestamo;
+	WHERE p.id_socio = p_id_socio AND estado = 'ACTIVO';
 
   IF prestamos_activos > 3 THEN
     SIGNAL SQLSTATE '45000'
@@ -22,8 +24,7 @@ BEGIN
 
   -- Verificar si hay sanciones activas
   SELECT count(s.id_sancion) INTO sanciones_activas FROM sancion s
-	WHERE s.id_socio = p_id_socio AND activa
-	GROUP BY s.id_sancion;
+	WHERE s.id_socio = p_id_socio AND activa;
   
   IF sanciones_activas > 0 THEN
     SIGNAL SQLSTATE '45000'
@@ -56,10 +57,13 @@ CREATE PROCEDURE sp_generar_sancion(IN s_id_socio INT, IN dias_mora INT)
 BEGIN
   DECLARE tipo INT; -- Sacamos el tipo de los parametros ya que lo vimos innecesario
   DECLARE tipo_motivo VARCHAR(100);
+  DECLARE v_mensaje_error VARCHAR(255) DEFAULT 'Error al procesar el prestamo';
+ 
   DECLARE EXIT HANDLER FOR SQLEXCEPTION
   BEGIN
+    GET DIAGNOSTICS CONDITION 1 v_mensaje_error = MESSAGE_TEXT;
     ROLLBACK;
-    SELECT 'Error al procesar el prestamo' AS mensaje;
+    SELECT v_mensaje_error AS mensaje;
   END;
 
   IF dias_mora > 30 THEN
@@ -87,10 +91,13 @@ BEGIN
   DECLARE fecha_dev DATE;
   DECLARE fecha_ven DATE;
   DECLARE socio INT;
+  DECLARE v_mensaje_error VARCHAR(255) DEFAULT 'Error al procesar el prestamo';
+
   DECLARE EXIT HANDLER FOR SQLEXCEPTION
   BEGIN
+    GET DIAGNOSTICS CONDITION 1 v_mensaje_error = MESSAGE_TEXT;
     ROLLBACK;
-    SELECT 'Error al procesar el prestamo' AS mensaje;
+    SELECT v_mensaje_error AS mensaje;
   END;
   
   SELECT fecha_devolucion, fecha_vencimiento INTO fecha_dev, fecha_ven FROM prestamo

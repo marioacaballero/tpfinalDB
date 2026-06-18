@@ -37,7 +37,7 @@ git clone https://github.com/marioacaballero/tpfinalDB.git
 
 
 ### 2. Configuración de la Base de Datos en DBeaver
-Para montar la estructura y lógica del sistema, abre DBeaver, crea una nueva conexión a tu servidor MySQL local utilizando el usuario root con su respectiva contraseña, y ejecuta de manera estricta y secuencial los siguientes scripts alojados en el proyecto:
+Para montar la estructura y lógica del sistema, abre DBeaver, crea una nueva conexión a tu servidor MySQL utilizando usuario y contraseña, y ejecuta de manera estricta y secuencial los siguientes scripts alojados en el directorio sql:
 
 01_ddl_schema.sql: Crea la base de datos y la estructura de las tablas.
 
@@ -54,9 +54,9 @@ El agente de IA necesita conocer las credenciales de acceso a la base de datos y
 
 Abre la carpeta del proyecto en Visual Studio Code.
 
-Crea un archivo en la raíz del proyecto llamado exactamente .env.
+Crea un archivo en el directorio notebooks del proyecto llamado exactamente .env.
 
-Copia, pega y completa la siguiente estructura con tus datos locales:
+Copia, pega y completa la siguiente estructura con tus datos:
 
 ```
 DB_HOST=localhost
@@ -89,7 +89,7 @@ python -m notebook
 ```
 
 ### 6. Ejecutar el Agente de IA
-En la interfaz gráfica de Jupyter que se abrió en tu navegador, navega y abre la carpeta llamada notebook.
+En la interfaz gráfica de Jupyter que se abrió en tu navegador, navega hasta el Proyecto y abre la carpeta llamada notebook.
 
 Haz clic en el archivo BiblioIA.ipynb para abrir el cuaderno de trabajo.
 
@@ -100,4 +100,4 @@ Importante: Espera a que cada celda termine su ejecución por completo (el indic
 ### 7. Probar las Consultas (Queries)
 Con el agente ya inicializado y corriendo, regresa al árbol de archivos de Jupyter y abre el archivo test_queries.ipynb.
 
-Desde este notebook podrás interactuar directamente con el sistema, enviar peticiones en lenguaje natural y verificar cómo el Agente Text-to-SQL las traduce y las ejecuta sobre nuestra base de datos relacional.
+Desde este notebook podrás interactuar directamente con el sistema, enviar peticiones en lenguaje natural y verificar cómo el Agente Text-to-SQL las traduce y las ejecuta sobre la base de datos relacional.

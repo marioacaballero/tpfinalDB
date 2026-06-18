@@ -53,14 +53,15 @@ END //
 DELIMITER ;
 
 DELIMITER //
+
 CREATE TRIGGER trg_audit_prestamo_update
 AFTER UPDATE ON prestamo
 FOR EACH ROW
 BEGIN
-	IF (NEW.fecha_devolucion IS DISTINCT FROM OLD.fecha_devolucion) OR (NEW.fecha_vencimiento IS DISTINCT FROM OLD.fecha_vencimiento) THEN
-		INSERT INTO auditoria_prestamos (id_prestamo, motivo, usuario)
-		VALUES (NEW.id_prestamo, NEW.estado, USER());
-	END IF;
+  IF NOT (NEW.fecha_devolucion <=> OLD.fecha_devolucion) OR NOT (NEW.fecha_vencimiento <=> OLD.fecha_vencimiento) THEN
+    INSERT INTO auditoria_prestamos (id_prestamo, motivo, usuario)
+    VALUES (NEW.id_prestamo, NEW.estado, USER());
+  END IF;
 END //
 
 DELIMITER ;
@@ -71,7 +72,7 @@ AFTER DELETE ON prestamo
 FOR EACH ROW
 BEGIN
 	INSERT INTO auditoria_prestamos (id_prestamo, motivo, usuario)
-	VALUES (NEW.id_prestamo, 'BORRADO', USER());
+	VALUES (OLD.id_prestamo, 'BORRADO', USER());
 END //
 
 DELIMITER ;

@@ -41,7 +41,7 @@ BEGIN
 
   START TRANSACTION;
 	INSERT INTO prestamo (fecha_prestamo, fecha_vencimiento, id_socio, id_ejemplar) VALUES
-	(CURDATE(), DATE_ADD(CURDATE(), INTERVAL 5 DAY)), p_id_socio, p_id_ejemplar);
+	(CURDATE(), DATE_ADD(CURDATE(), INTERVAL 5 DAY), p_id_socio, p_id_ejemplar);
 
 	UPDATE ejemplar
 	SET estado_fisico = 'PRESTADO'
@@ -52,7 +52,7 @@ END//
 DELIMITER ;
 
 DELIMITER //
-CREATE PROCEDURE sp_generar_sancion(s_id_socio, dias_mora)
+CREATE PROCEDURE sp_generar_sancion(IN s_id_socio INT, IN dias_mora INT)
 BEGIN
   DECLARE tipo INT; -- Sacamos el tipo de los parametros ya que lo vimos innecesario
   DECLARE tipo_motivo VARCHAR(100);

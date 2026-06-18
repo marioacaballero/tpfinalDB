@@ -16,6 +16,7 @@ CREATE TABLE genero (
 DROP TABLE IF EXISTS libro;
 CREATE TABLE libro (
 	isbn VARCHAR(13) PRIMARY KEY,
+	titulo VARCHAR(50) NOT NULL,
 	anio_publicacion INT NOT NULL,
 	stock_total INT DEFAULT 0,
 	stock_disponible INT DEFAULT 0,

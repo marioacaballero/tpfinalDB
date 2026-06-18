@@ -19,27 +19,27 @@ INSERT INTO autor (nombre, apellido, nacionalidad) VALUES
 ('Agatha', 'Christie', 'Británica'),
 ('Arturo', 'Pérez-Reverte', 'Española');
 
-INSERT INTO libro (isbn, anio_publicacion, stock_total, stock_disponible) VALUES
-('9780307474728', 1967, 5, 3), -- Cien años de soledad
-('9780060934347', 1982, 4, 4), -- La casa de los espíritus
-('9788420633114', 1944, 3, 2), -- Ficciones
-('9788439734475', 1963, 3, 1), -- Rayuela
-('9781501143519', 1977, 6, 5), -- El resplandor
-('9780747532699', 1997, 10, 8), -- Harry Potter 1
-('9780553103540', 1996, 5, 2), -- Juego de Tronos
-('9780553293357', 1951, 4, 4), -- Fundación
-('9780007119318', 1934, 4, 3), -- Asesinato en el Orient Express
-('9788420412146', 1996, 3, 3), -- El capitán Alatriste
-('9780307389732', 1985, 3, 2), -- El amor en los tiempos del cólera
-('9781501144264', 1986, 5, 4), -- It
-('9780747538486', 1998, 8, 7), -- Harry Potter 2
-('9780553108033', 1998, 4, 1), -- Choque de Reyes
-('9780553294385', 1952, 3, 3), -- Fundación e Imperio
-('9780007122035', 1926, 4, 2), -- El asesinato de Roger Ackroyd
-('9788499928500', 2018, 2, 2), -- Sabotaje
-('9788466338141', 2002, 3, 1), -- La reina del sur
-('9788408045076', 1953, 4, 4), -- El Aleph (Borges, reedición)
-('9788420442389', 1951, 3, 2); -- Bestiario (Cortázar)
+INSERT INTO libro (isbn, anio_publicacion, stock_total, stock_disponible, titulo) VALUES
+('9780307474728', 1967, 5, 3, 'Cien años de soledad'),
+('9780060934347', 1982, 4, 4, 'La casa de los espíritus'),
+('9788420633114', 1944, 3, 2, 'Ficciones'),
+('9788439734475', 1963, 3, 1, 'Rayuela'),
+('9781501143519', 1977, 6, 5, 'El resplandor'),
+('9780747532699', 1997, 10, 8, 'Harry Potter 1'),
+('9780553103540', 1996, 5, 2, 'Juego de Tronos'),
+('9780553293357', 1951, 4, 4, 'Fundación'),
+('9780007119318', 1934, 4, 3, 'Asesinato en el Orient Express'),
+('9788420412146', 1996, 3, 3, 'El capitán Alatriste'),
+('9780307389732', 1985, 3, 2, 'El amor en los tiempos del cólera'),
+('9781501144264', 1986, 5, 4, 'It'),
+('9780747538486', 1998, 8, 7, 'Harry Potter 2'),
+('9780553108033', 1998, 4, 1, 'Choque de Reyes'),
+('9780553294385', 1952, 3, 3, 'Fundación e Imperio'),
+('9780007122035', 1926, 4, 2, 'El asesinato de Roger Ackroyd'),
+('9788499928500', 2018, 2, 2, 'Sabotaje'),
+('9788466338141', 2002, 3, 1, 'La reina del sur'),
+('9788408045076', 1953, 4, 4, 'El Aleph (Borges, reedición)'),
+('9788420442389', 1951, 3, 2, 'Bestiario (Cortázar)');
 
 INSERT INTO libro_genero (id_genero, id_libro) VALUES
 (5, '9780307474728'), (1, '9780060934347'), (5, '9780060934347'),
@@ -92,26 +92,26 @@ INSERT INTO socio (dni, nombre, apellido, email, fecha_alta, estado) VALUES
 ('54012345', 'Julieta', 'Guzmán', 'juli.guzman@email.com', '2025-08-05', 'ACTIVO');
 
 INSERT INTO ejemplar (isbn, nro_ejemplar, estado_fisico) VALUES
-('9780307474728', 1, 'BUENO'), ('9780307474728', 2, 'BUENO'), ('9780307474728', 3, 'REGULAR'),
-('9780060934347', 1, 'BUENO'), ('9780060934347', 2, 'BUENO'),
-('9788420633114', 1, 'BUENO'), ('9788420633114', 2, 'REGULAR'),
-('9788439734475', 1, 'BUENO'),
-('9781501143519', 1, 'BUENO'), ('9781501143519', 2, 'BUENO'),
-('9780747532699', 1, 'BUENO'), ('9780747532699', 2, 'BUENO'), ('9780747532699', 3, 'REGULAR'),
-('9780553103540', 1, 'BUENO'), ('9780553103540', 2, 'REGULAR'),
-('9780553293357', 1, 'BUENO'), ('9780553293357', 2, 'BUENO'),
-('9780007119318', 1, 'BUENO'), ('9780007119318', 2, 'BUENO'),
-('9788420412146', 1, 'BUENO'), ('9788420412146', 2, 'BUENO'),
-('9780307389732', 1, 'BUENO'), ('9780307389732', 2, 'REGULAR'),
-('9781501144264', 1, 'BUENO'), ('9781501144264', 2, 'BUENO'),
-('9780747538486', 1, 'BUENO'), ('9780747538486', 2, 'BUENO'),
-('9780553108033', 1, 'BUENO'),
-('9780553294385', 1, 'BUENO'), ('9780553294385', 2, 'BUENO'),
-('9780007122035', 1, 'BUENO'), ('9780007122035', 2, 'REGULAR'),
-('9788499928500', 1, 'BUENO'), ('9788499928500', 2, 'BUENO'),
-('9788466338141', 1, 'BUENO'),
-('9788408045076', 1, 'BUENO'), ('9788408045076', 2, 'BUENO'),
-('9788420442389', 1, 'BUENO'), ('9788420442389', 2, 'REGULAR'), ('9788420442389', 3, 'BUENO');
+('9780307474728', 1, 'DISPONIBLE'), ('9780307474728', 2, 'DISPONIBLE'), ('9780307474728', 3, 'DISPONIBLE'),
+('9780060934347', 1, 'DISPONIBLE'), ('9780060934347', 2, 'DISPONIBLE'),
+('9788420633114', 1, 'DISPONIBLE'), ('9788420633114', 2, 'DISPONIBLE'),
+('9788439734475', 1, 'DISPONIBLE'),
+('9781501143519', 1, 'DISPONIBLE'), ('9781501143519', 2, 'DISPONIBLE'),
+('9780747532699', 1, 'DISPONIBLE'), ('9780747532699', 2, 'DISPONIBLE'), ('9780747532699', 3, 'DISPONIBLE'),
+('9780553103540', 1, 'DISPONIBLE'), ('9780553103540', 2, 'DISPONIBLE'),
+('9780553293357', 1, 'DISPONIBLE'), ('9780553293357', 2, 'DISPONIBLE'),
+('9780007119318', 1, 'DISPONIBLE'), ('9780007119318', 2, 'DISPONIBLE'),
+('9788420412146', 1, 'DISPONIBLE'), ('9788420412146', 2, 'DISPONIBLE'),
+('9780307389732', 1, 'DISPONIBLE'), ('9780307389732', 2, 'DISPONIBLE'),
+('9781501144264', 1, 'DISPONIBLE'), ('9781501144264', 2, 'DISPONIBLE'),
+('9780747538486', 1, 'DISPONIBLE'), ('9780747538486', 2, 'DISPONIBLE'),
+('9780553108033', 1, 'DISPONIBLE'),
+('9780553294385', 1, 'DISPONIBLE'), ('9780553294385', 2, 'DISPONIBLE'),
+('9780007122035', 1, 'DISPONIBLE'), ('9780007122035', 2, 'DISPONIBLE'),
+('9788499928500', 1, 'DISPONIBLE'), ('9788499928500', 2, 'DISPONIBLE'),
+('9788466338141', 1, 'DISPONIBLE'),
+('9788408045076', 1, 'DISPONIBLE'), ('9788408045076', 2, 'DISPONIBLE'),
+('9788420442389', 1, 'DISPONIBLE'), ('9788420442389', 2, 'DISPONIBLE'), ('9788420442389', 3, 'DISPONIBLE');
 
 INSERT INTO prestamo (fecha_prestamo, fecha_vencimiento, fecha_devolucion, estado, id_socio, id_ejemplar) VALUES
 ('2026-01-05', '2026-01-20', '2026-01-18', 'DEVUELTO', 1, 5),

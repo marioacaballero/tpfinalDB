@@ -88,8 +88,9 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE sp_registrar_devolucion(IN p_id_prestamo INT)
 BEGIN
-  DECLARE fecha_dev DATE;
+  DECLARE fecha_dev DATE DEFAULT CURDATE();
   DECLARE fecha_ven DATE;
+  DECLARE p_id_ejemplar INT;
   DECLARE socio INT;
   DECLARE v_mensaje_error VARCHAR(255) DEFAULT 'Error al procesar el prestamo';
 
@@ -100,7 +101,7 @@ BEGIN
     SELECT v_mensaje_error AS mensaje;
   END;
   
-  SELECT fecha_devolucion, fecha_vencimiento INTO fecha_dev, fecha_ven FROM prestamo
+  SELECT fecha_vencimiento, id_ejemplar INTO fecha_ven, p_id_ejemplar FROM prestamo
     WHERE id_prestamo = p_id_prestamo;
 
   IF fecha_dev > fecha_ven THEN
@@ -109,7 +110,8 @@ BEGIN
 		WHERE id_prestamo = p_id_prestamo;
 
 	UPDATE prestamo 
-	SET estado = 'VENCIDO'
+	SET estado = 'VENCIDO',
+		fecha_devolucion = fecha_dev
 	WHERE id_prestamo = p_id_prestamo;
 	
 	CALL sp_generar_sancion(socio, DATEDIFF(fecha_dev, fecha_ven));
@@ -117,7 +119,8 @@ BEGIN
   ELSE
     START TRANSACTION;
 	UPDATE prestamo 
-	SET estado = 'DEVUELTO'
+	SET estado = 'DEVUELTO',
+		fecha_devolucion = fecha_dev
 	WHERE id_prestamo = p_id_prestamo;
 
 	UPDATE ejemplar e

@@ -15,10 +15,10 @@ CREATE TABLE genero (
 
 DROP TABLE IF EXISTS libro;
 CREATE TABLE libro (
-	isbn VARCHAR(13) PRIMARY KEY,
+	isbn VARCHAR(13) PRIMARY KEY CHECK (isbn REGEXP '^[0-9]{13}$'),
 	titulo VARCHAR(50) NOT NULL,
 	anio_publicacion INT NOT NULL,
-	stock_total INT DEFAULT 0,
+	stock_total INT DEFAULT 0 CHECK (stock_total >= 0),
 	stock_disponible INT DEFAULT 0,
 	CONSTRAINT chk_stock CHECK (stock_disponible >= 0 AND stock_disponible <= stock_total)	
 );
@@ -26,7 +26,7 @@ CREATE TABLE libro (
 DROP TABLE IF EXISTS libro_genero;
 CREATE TABLE libro_genero (
 	id_genero INT NOT NULL,
-	id_libro VARCHAR(13) NOT NULL,
+	id_libro VARCHAR(13) NOT NULL CHECK (id_libro REGEXP '^[0-9]{13}$'),
 	PRIMARY KEY (id_genero, id_libro),
 	FOREIGN KEY (id_genero) REFERENCES genero (id_genero) ON DELETE CASCADE,
 	FOREIGN KEY (id_libro) REFERENCES libro (isbn) ON DELETE CASCADE
@@ -35,7 +35,7 @@ CREATE TABLE libro_genero (
 DROP TABLE IF EXISTS libro_autor;
 CREATE TABLE libro_autor (
 	id_autor INT NOT NULL,
-	id_libro VARCHAR(13) NOT NULL,
+	id_libro VARCHAR(13) NOT NULL CHECK (id_libro REGEXP '^[0-9]{13}$'),
 	PRIMARY KEY (id_autor, id_libro),
 	FOREIGN KEY (id_autor) REFERENCES autor (id_autor) ON DELETE CASCADE,
 	FOREIGN KEY (id_libro) REFERENCES libro (isbn) ON DELETE CASCADE
@@ -44,7 +44,7 @@ CREATE TABLE libro_autor (
 DROP TABLE IF EXISTS socio;
 CREATE TABLE socio (
 	id_socio INT PRIMARY KEY AUTO_INCREMENT,
-	dni VARCHAR(8) NOT NULL UNIQUE,
+	dni VARCHAR(8) NOT NULL UNIQUE CHECK (dni REGEXP '^[0-9]{7,8}$'),
 	nombre VARCHAR(50) NOT NULL,
 	apellido VARCHAR(50) NOT NULL,
 	email VARCHAR(100) NOT NULL UNIQUE CHECK (email LIKE '%@%'),
@@ -55,7 +55,7 @@ CREATE TABLE socio (
 DROP TABLE IF EXISTS ejemplar;
 CREATE TABLE ejemplar (
 	id_ejemplar INT PRIMARY KEY AUTO_INCREMENT,
-	isbn VARCHAR(13) NOT NULL,
+	isbn VARCHAR(13) NOT NULL CHECK (isbn REGEXP '^[0-9]{13}$'),
 	nro_ejemplar INT NOT NULL,
 	estado_fisico VARCHAR(50) CHECK (estado_fisico IN ('DISPONIBLE', 'PRESTADO', 'RESERVADO', 'BAJA')),
 	FOREIGN KEY (isbn) REFERENCES libro (isbn) ON DELETE CASCADE

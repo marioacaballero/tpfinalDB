@@ -17,7 +17,7 @@ BEGIN
   SELECT count(p.id_prestamo) INTO prestamos_activos FROM prestamo p
 	WHERE p.id_socio = p_id_socio AND estado = 'ACTIVO';
 
-  IF prestamos_activos > 3 THEN
+  IF prestamos_activos >= 3 THEN
     SIGNAL SQLSTATE '45000'
       SET MESSAGE_TEXT = 'El limite de prestamo se ha superado';
   END IF;
